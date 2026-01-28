@@ -18,6 +18,12 @@ jobs:
         uses: astral-sh/setup-uv@v7
 
       - name: Run script
+        uses: nick-fields/retry@v3
+        with:
+          max_attempts: 3
+          retry_on: error
+          retry_wait_seconds: 60
+          command: uv run main.py
         env:
           ZOTERO_ID: ${{ secrets.ZOTERO_ID }}
           ZOTERO_KEY: ${{ secrets.ZOTERO_KEY }}
@@ -35,5 +41,3 @@ jobs:
           OPENAI_API_BASE: ${{ secrets.OPENAI_API_BASE }}
           MODEL_NAME: ${{ secrets.MODEL_NAME }}
           LANGUAGE: ${{ vars.LANGUAGE }}
-        run: |
-          uv run main.py
